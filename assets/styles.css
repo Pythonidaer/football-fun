@@ -1,35 +1,447 @@
-/* CSS to style the player card */
-.player-card {
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin: 10px;
-  width: 200px; /* Adjust width as needed */
-}
-
-.player-info {
-  text-align: center;
-}
-
-.rankings {
-  font-weight: bold;
-  display: flex;
-}
-
-.overall-ranking {
-  margin: 0;
-}
-
-.positional-ranking {
-  margin: 0;
-}
-
-.team-name {
-  margin: 0;
-}
-
-.player-name {
-  font-weight: bold;
-  margin: 5px 0;
-}
-
 /* Add more CSS rules for styling as needed */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: darkgray;
+}
+
+.overall-stats {
+  color: white;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.overall-stats p {
+  margin: 0;
+}
+
+.overall-stats p:first-child {
+  margin-right: auto;
+}
+
+.overall-stats p:nth-child(2) {
+  /* margin-right: 0.5rem; */
+  margin-right: 4%;
+}
+.players-name {
+  color: white;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+.players-name p {
+  margin-top: 0.5rem;
+}
+
+#cardContainer {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  /* grid-template-columns: repeat(12, 120px); */
+  /* grid-template-columns: repeat(12, 80px); */
+  grid-gap: 5px;
+  grid-auto-flow: row;
+  /* max-width: 50%; */
+  /* margin-right: auto; */
+  padding-right: 50px;
+  grid-template-areas:
+    'card1 card2 card3 card4 card5 card6 card7 card8 card9 card10 card11 card12'
+    'card24 card23 card22 card21 card20 card19 card18 card17 card16 card15 card14 card13'
+    'card25 card26 card27 card28 card29 card30 card31 card32 card33 card34 card35 card36'
+    'card48 card47 card46 card45 card44 card43 card42 card41 card40 card39 card38 card37'
+    'card49 card50 card51 card52 card53 card54 card55 card56 card57 card58 card59 card60'
+    'card72 card71 card70 card69 card68 card67 card66 card65 card64 card63 card62 card61'
+    'card73 card74 card75 card76 card77 card78 card79 card80 card81 card82 card83 card84'
+    'card96 card95 card94 card93 card92 card91 card90 card89 card88 card87 card86 card85'
+    'card97 card98 card99 card100 card101 card102 card103 card104 card105 card106 card107 card108'
+    'card120 card119 card118 card117 card116 card115 card114 card113 card112 card111 card110 card109'
+    'card121 card122 card123 card124 card125 card126 card127 card128 card129 card130 card131 card132'
+    'card144 card143 card142 card141 card140 card139 card138 card137 card136 card135 card134 card133'
+    'card145 card146 card147 card148 card149 card150 card151 card152 card153 card154 card155 card156'
+    'card168 card167 card166 card165 card164 card163 card162 card161 card160 card159 card158 card157'
+    'card169 card170 card171 card172 card173 card174 card175 card176 card177 card178 card179 card180'
+    'card192 card191 card190 card189 card188 card187 card186 card185 card184 card183 card182 card181'
+    'card193 card194 card195 card196 card197 card198 card199 card200 card201 card202 card203 card204'
+    'card216 card215 card214 card213 card212 card211 card210 card209 card208 card207 card206 card205'
+    'card217 card218 card219 card220 card221 card222 card223 card224 card225 card226 card227 card228'
+    'card240 card239 card238 card237 card236 card235 card234 card233 card232 card231 card230 card229'
+    'card241 card242 card243 card244 card245 card246 card247 card248 card249 card250 card251 card252'
+    'card264 card263 card262 card261 card260 card259 card258 card257 card256 card255 card254 card253'
+    'card265 card266 card267 card268 card269 card270 card271 card272 card273 card274 card275 card276'
+    'card288 card287 card286 card285 card284 card283 card282 card281 card280 card279 card278 card277'
+    'card289 card290 card291 card292 card293 card294 card295 card296 card297 card298 card299 card300';
+}
+
+/* My attempt 
+.card {
+  /* max-width: 200px; 
+  /* max-width: 150px; 
+  /* margin: 0.2rem; 
+} */
+.card {
+  font-size: 12px;
+}
+
+/* :nth-child(n + 13):nth-child(-n + 24),
+:nth-child(n + 37):nth-child(-n + 48),
+:nth-child(n + 61):nth-child(-n + 72),
+:nth-child(n + 85):nth-child(-n + 96),
+:nth-child(n + 109):nth-child(-n + 120),
+:nth-child(n + 133):nth-child(-n + 144),
+:nth-child(n + 157):nth-child(-n + 168),
+:nth-child(n + 181):nth-child(-n + 192),
+:nth-child(n + 205):nth-child(-n + 216),
+:nth-child(n + 229):nth-child(-n + 240),
+:nth-child(n + 253):nth-child(-n + 264),
+:nth-child(n + 277):nth-child(-n + 288) {
+  background: black !important;
+} */
+
+.allContainer {
+  display: flex;
+  /* justify-content: space-between; */
+  /* justify-content: space-evenly; */
+  justify-content: flex-start;
+}
+
+#dragZone {
+  /* display: grid;
+  grid-template-columns: 1 1fr;
+  grid-auto-flow: column; */
+
+  width: 120px;
+  /* height: 1260px; */
+  background: black;
+  margin-right: auto;
+}
+
+#dragZone .card {
+  /* max-width: 120px; */
+  /* height: 83px; */
+  border-bottom: 5px solid darkgray;
+}
+
+.draggable.dragging {
+  opacity: 0.5;
+  /* border: 5px solid red; */
+  box-shadow: inset 0 0 0 2px red;
+}
+
+@media (max-width: 768px) {
+  .allContainer {
+    justify-content: space-evenly;
+  }
+  #dragZone {
+    margin-right: 0;
+  }
+  #cardContainer {
+    padding-right: 20px;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'card1'
+      'card2'
+      'card3'
+      'card4'
+      'card5'
+      'card6'
+      'card7'
+      'card8'
+      'card9'
+      'card10'
+      'card11'
+      'card12'
+      'card13'
+      'card14'
+      'card15'
+      'card16'
+      'card17'
+      'card18'
+      'card19'
+      'card20'
+      'card21'
+      'card22'
+      'card23'
+      'card24'
+      'card25'
+      'card26'
+      'card27'
+      'card28'
+      'card29'
+      'card30'
+      'card31'
+      'card32'
+      'card33'
+      'card34'
+      'card35'
+      'card36'
+      'card37'
+      'card38'
+      'card39'
+      'card40'
+      'card41'
+      'card42'
+      'card43'
+      'card44'
+      'card45'
+      'card46'
+      'card47'
+      'card48'
+      'card49'
+      'card50'
+      'card51'
+      'card52'
+      'card53'
+      'card54'
+      'card55'
+      'card56'
+      'card57'
+      'card58'
+      'card59'
+      'card60'
+      'card61'
+      'card62'
+      'card63'
+      'card64'
+      'card65'
+      'card66'
+      'card67'
+      'card68'
+      'card69'
+      'card70'
+      'card71'
+      'card72'
+      'card73'
+      'card74'
+      'card75'
+      'card76'
+      'card77'
+      'card78'
+      'card79'
+      'card80'
+      'card81'
+      'card82'
+      'card83'
+      'card84'
+      'card85'
+      'card86'
+      'card87'
+      'card88'
+      'card89'
+      'card90'
+      'card91'
+      'card92'
+      'card93'
+      'card94'
+      'card95'
+      'card96'
+      'card97'
+      'card98'
+      'card99'
+      'card100'
+      'card101'
+      'card102'
+      'card103'
+      'card104'
+      'card105'
+      'card106'
+      'card107'
+      'card108'
+      'card109'
+      'card110'
+      'card111'
+      'card112'
+      'card113'
+      'card114'
+      'card115'
+      'card116'
+      'card117'
+      'card118'
+      'card119'
+      'card120'
+      'card121'
+      'card122'
+      'card123'
+      'card124'
+      'card125'
+      'card126'
+      'card127'
+      'card128'
+      'card129'
+      'card130'
+      'card131'
+      'card132'
+      'card133'
+      'card134'
+      'card135'
+      'card136'
+      'card137'
+      'card138'
+      'card139'
+      'card140'
+      'card141'
+      'card142'
+      'card143'
+      'card144'
+      'card145'
+      'card146'
+      'card147'
+      'card148'
+      'card149'
+      'card150'
+      'card151'
+      'card152'
+      'card153'
+      'card154'
+      'card155'
+      'card156'
+      'card157'
+      'card158'
+      'card159'
+      'card160'
+      'card161'
+      'card162'
+      'card163'
+      'card164'
+      'card165'
+      'card166'
+      'card167'
+      'card168'
+      'card169'
+      'card170'
+      'card171'
+      'card172'
+      'card173'
+      'card174'
+      'card175'
+      'card176'
+      'card177'
+      'card178'
+      'card179'
+      'card180'
+      'card181'
+      'card182'
+      'card183'
+      'card184'
+      'card185'
+      'card186'
+      'card187'
+      'card188'
+      'card189'
+      'card190'
+      'card191'
+      'card192'
+      'card193'
+      'card194'
+      'card195'
+      'card196'
+      'card197'
+      'card198'
+      'card199'
+      'card200'
+      'card201'
+      'card202'
+      'card203'
+      'card204'
+      'card205'
+      'card206'
+      'card207'
+      'card208'
+      'card209'
+      'card210'
+      'card211'
+      'card212'
+      'card213'
+      'card214'
+      'card215'
+      'card216'
+      'card217'
+      'card218'
+      'card219'
+      'card220'
+      'card221'
+      'card222'
+      'card223'
+      'card224'
+      'card225'
+      'card226'
+      'card227'
+      'card228'
+      'card229'
+      'card230'
+      'card231'
+      'card232'
+      'card233'
+      'card234'
+      'card235'
+      'card236'
+      'card237'
+      'card238'
+      'card239'
+      'card240'
+      'card241'
+      'card242'
+      'card243'
+      'card244'
+      'card245'
+      'card246'
+      'card247'
+      'card248'
+      'card249'
+      'card250'
+      'card251'
+      'card252'
+      'card253'
+      'card254'
+      'card255'
+      'card256'
+      'card257'
+      'card258'
+      'card259'
+      'card260'
+      'card261'
+      'card262'
+      'card263'
+      'card264'
+      'card265'
+      'card266'
+      'card267'
+      'card268'
+      'card269'
+      'card270'
+      'card271'
+      'card272'
+      'card273'
+      'card274'
+      'card275'
+      'card276'
+      'card277'
+      'card278'
+      'card279'
+      'card280'
+      'card281'
+      'card282'
+      'card283'
+      'card284'
+      'card285'
+      'card286'
+      'card287'
+      'card288'
+      'card289'
+      'card290'
+      'card291'
+      'card292'
+      'card293'
+      'card294'
+      'card295'
+      'card296'
+      'card297'
+      'card298'
+      'card299'
+      'card300';
+  }
+}
