@@ -1,6 +1,12 @@
 import data from './data/2023pprTop300.js'
 
 let ranking = 1
+function adjustDragZone() {
+  const element = document.querySelector(`#cardContainer .card300`)
+  const dragZone = document.getElementById(`dragZone`)
+  dragZone.style.width = `${element.offsetWidth}px`
+  console.log(element.offsetWidth)
+}
 function createCard(data) {
   const card = document.createElement('div')
   card.classList.add('card')
@@ -82,6 +88,8 @@ data.forEach((player) => {
   ranking++
 })
 
+adjustDragZone()
+
 // let img = new Image()
 // img.src = './assets/football.gif'
 
@@ -98,6 +106,10 @@ draggables.forEach((draggable) => {
 
   draggable.addEventListener('dragend', () => {
     draggable.classList.remove('dragging')
+    console.log('check lists')
+    testR()
+    checkElementsInNestedArrays(singleCol, arrayOfArrays)
+    adjustDragZone()
   })
 })
 
@@ -129,152 +141,113 @@ rowsToGrey.forEach((card) => {
 
 // Initialize an empty array to store arrays of 12 elements each
 const arrayOfArrays = []
+// const arrayOfArraysIds = []
 
 // Initialize an empty subarray
 let subarray = []
+// let subarrayId = []
 
 // Loop through the elements in the inputArray
 for (let i = 0; i < snakeRows.length; i++) {
   // Add the current element to the subarray
-  subarray.push(snakeRows[i])
+  //   subarray.push(snakeRows[i])
+  subarray.push(snakeRows[i].id)
 
   // Check if the subarray has reached a length of 12
   if (subarray.length === 12 || i === snakeRows.length - 1) {
     // If the subarray has 12 elements or it's the last element of inputArray, push it into arrayOfArrays
     arrayOfArrays.push(subarray)
+    // arrayOfArraysIds.push(subarrayId)
 
     // Reset the subarray to start a new one
     subarray = []
   }
 }
 
-// console.log(arrayOfArrays)
+console.log(arrayOfArrays)
 
 // Initialize an empty array to store the extracted phrases
-// const extractedPhrases = []
+const extractedPhrases = []
 
-// // Loop through the arrays within arrayOfArrays
-// for (let i = 0; i < arrayOfArrays.length; i++) {
-//   const subarray = arrayOfArrays[i]
+// Loop through the arrays within arrayOfArrays
+for (let i = 0; i < arrayOfArrays.length; i++) {
+  const subarray = arrayOfArrays[i]
 
-//   // Loop through the elements in the subarray
-//   for (let j = 0; j < subarray.length; j++) {
-//     const element = subarray[j]
+  // Loop through the elements in the subarray
+  for (let j = 0; j < subarray.length; j++) {
+    const element = subarray[j]
+    // console.log(element)
 
-//     // Convert the DOM element to a string using outerHTML
-//     const elementString =
-//       element instanceof HTMLElement ? element.outerHTML : element.toString()
+    // Convert the DOM element to a string using outerHTML
+    const elementString =
+      element instanceof HTMLElement ? element.outerHTML : element.toString()
 
-//     // Use regular expressions to extract the card patterns (e.g., card#, card##, or card###)
-//     const matches = elementString.match(/\bcard\d+\b/g)
+    // Use regular expressions to extract the card patterns (e.g., card#, card##, or card###)
+    const matches = elementString.match(/\bcard\d+\b/g)
 
-//     // Check if matches were found
-//     if (matches && matches.length > 0) {
-//       // Add the captured card patterns to the extractedPhrases array
-//       extractedPhrases.push(...matches)
-//     }
-//   }
-// }
+    // Check if matches were found
+    if (matches && matches.length > 0) {
+      // Add the captured card patterns to the extractedPhrases array
+      extractedPhrases.push(...matches)
+    }
+  }
+}
 
 // console.log(extractedPhrases)
 
-// function getDragAfterElement(container, y) {
-//   const draggableElements = [
-//     ...container.querySelectorAll('.draggable:not(.dragging)'),
-//   ]
-
-//   return draggableElements.reduce((closest, child) => {
-//     const box = child.getBoundingClientRect()
-//     const offset = y - box.top - box.height / 2
-//     if (offset < 0 && offset > closest.offset) {
-//       return { offset: offset, element: child }
-//     } else {
-//       return closest
-//     }
-//   })
-// }
-
-/*
-function dragstart_handler(ev) {
-  //   ev.dataTransfer.setDragImage(img, 10, 10)
-  // Add the target element's id to the data transfer object
-  console.log('dragging has started')
-  ev.dataTransfer.dropEffect = 'move'
-  ev.dataTransfer.setData('text/plain', ev.target.id)
-  //   ev.dataTransfer.setData('text/plain', ev.target.outerHTML)
-  console.log(ev.target) // the card target is the DOM element itself, in this case the card
-  //   console.log(ev.target.innerHTML) // this is only the card's inner contents, not the card itself
-  console.log(ev.target.outerHTML)
-  console.log(ev.target.classList)
-  console.log(ev.dataTransfer)
+// Need a function that checks #dragZone .card container when a drag event occurs
+// need to repeat a lot of the above code for each card, but I don't need 12 rows just 1
+// When I compare one array to the other nested array, if card1 is in [card1... card12] add a class to that entire row else remove it
+let singleCol = []
+const testR = () => {
+  const cardDeterminingGrey = document.querySelectorAll('#dragZone .card')
+  console.log(cardDeterminingGrey.length)
+  if (cardDeterminingGrey.length == 0) {
+    singleCol = []
+  } else {
+    singleCol = []
+    cardDeterminingGrey.forEach((card) => {
+      if (!singleCol.includes(card.id)) {
+        singleCol.push(card.id)
+      }
+    })
+  }
+  //   console.log(singleCol)
+  //   singleCol = []
 }
 
-function dragover_handler(ev) {
-  ev.preventDefault()
-  ev.dataTransfer.dropEffect = 'move'
+const checkElementsInNestedArrays = (arrayToCheck, arrayToSearch) => {
+  for (let i = 0; i < arrayToSearch.length; i++) {
+    let matchFound = false // Track if a match is found in the nested array
+    for (let j = 0; j < arrayToCheck.length; j++) {
+      if (arrayToSearch[i].includes(arrayToCheck[j])) {
+        matchFound = true // Set matchFound to true if a match is found
+
+        // Loop through the elements in the nested array and add a class
+        arrayToSearch[i].forEach((className) => {
+          const elementsWithClass = document.querySelectorAll(
+            `#cardContainer .${className}`
+          )
+          elementsWithClass.forEach((element) => {
+            element.classList.add('presumedUnavailable') // Replace 'your-class-name' with the class you want to add
+          })
+        })
+
+        // No need to continue checking arrayToCheck if a match is found
+        break
+      }
+    }
+
+    // If no match is found in the nested array, remove the class
+    if (!matchFound) {
+      arrayToSearch[i].forEach((className) => {
+        const elementsWithClass = document.querySelectorAll(
+          `#cardContainer .${className}`
+        )
+        elementsWithClass.forEach((element) => {
+          element.classList.remove('presumedUnavailable') // Remove the class
+        })
+      })
+    }
+  }
 }
-function drop_handler(ev) {
-  ev.preventDefault()
-  // Get the id of the target and add the moved element to the target's DOM
-  //   const dragZone = document.getElementById('dragZone')
-  //   console.log(dragZone)
-  const data = ev.dataTransfer.getData('text/plain')
-  //   ev.target.appendChild(document.getElementById(data))
-  ev.target.appendChild(document.getElementById(data))
-}
-
-window.addEventListener('DOMContentLoaded', () => {
-  // Get all elements with the "card" class
-  const cardElements = document.querySelectorAll('.card')
-
-  // Loop through the card elements and add the dragstart event listener
-  cardElements.forEach((element) => {
-    element.addEventListener('dragstart', dragstart_handler)
-    element.addEventListener('dragover', dragover_handler)
-    // element.addEventListener('dragend', drop_handler)
-  })
-
-  const dragZone = document.getElementById('dragZone')
-  dragZone.addEventListener('dragend', drop_handler)
-})
-*/
-
-/*
-console.log(data)
-*/
-
-// function getPattern() {
-//   let players = 300
-//   let j = 1
-//   for (let i = 1; i <= players; i++) {
-//     console.log(`"card${i}"`)
-// if (j % 2 != 0) {
-//   console.log(
-//     `card${i} card${i + 1} card${i + 2} card${i + 3} card${i + 4} card${
-//       i + 5
-//     } card${i + 6} card${i + 7} card${i + 8} card${i + 9} card${
-//       i + 10
-//     } card${i + 11}`
-//   )
-//   j++
-// } else {
-//   console.log(
-//     `card${i} card${i + 1} card${i + 2} card${i + 3} card${i + 4} card${
-//       i + 5
-//     } card${i + 6} card${i + 7} card${i + 8} card${i + 9} card${
-//       i + 10
-//     } card${i + 11}`
-//       .split(' ')
-//       .reverse()
-//       .join(' ')
-//   )
-//   j++
-// }
-// console.log(
-//   `.card${i} {
-//         grid-area: card${i}
-//     }`
-// )
-//   }
-// }
-// getPattern()
