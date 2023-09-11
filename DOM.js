@@ -154,7 +154,6 @@ containers.forEach((container) => {
       console.log(draggedElement)
       console.log(correctCard)
     }
-    // console.log(correctCard)
 
     // Mark that an element is being dragged
     isDragging = true
@@ -181,27 +180,18 @@ containers.forEach((container) => {
 
   container.addEventListener('touchend', (e) => {
     e.preventDefault()
-    // let test2 = document.getElementById('dragZone')
-    // if (test2) {
-    //   test2.innerHTML = test2.innerHTML.replace(/null/g, '')
-    //   test2.innerHTML = test2.innerHTML.replace(/undefined/g, '')
-    // }
 
     const touchEnd = e.changedTouches[0]
     console.log(touchEnd)
     if (document.elementFromPoint(touchEnd.pageX, touchEnd.pageY) === null) {
       dragToColumn = document
         .elementFromPoint(touchEnd.clientX, touchEnd.clientY)
-        .firstChild()
         .closest('.container')
     } else {
       dragToColumn = document
         .elementFromPoint(touchEnd.pageX, touchEnd.pageY)
         .closest('.container')
     }
-    // if (correctCard === null) {
-    //   correctCard = ''
-    // }
 
     if (dragToColumn != null && correctCard != null) {
       dragToColumn.append(correctCard)
@@ -239,7 +229,6 @@ for (let i = 0; i < snakeRows.length; i++) {
   if (subarray.length === 12 || i === snakeRows.length - 1) {
     // If the subarray has 12 elements or it's the last element of inputArray, push it into arrayOfArrays
     arrayOfArrays.push(subarray)
-    // arrayOfArraysIds.push(subarrayId)
 
     // Reset the subarray to start a new one
     subarray = []
