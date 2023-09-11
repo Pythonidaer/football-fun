@@ -2,10 +2,18 @@
 
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  background: darkgray;
+  background: white;
+  font-family: 'Lato', sans-serif;
+}
+
+h1 {
+  text-align: center;
+  margin: 2rem 0;
 }
 
 .overall-stats {
@@ -17,37 +25,39 @@ body {
 
 .overall-stats p {
   margin: 0;
+  margin-top: 0.25rem;
 }
 
 .overall-stats p:first-child {
   margin-right: auto;
+  margin-left: 0.5rem;
 }
 
-.overall-stats p:nth-child(2) {
-  /* margin-right: 0.5rem; */
-  margin-right: 4%;
+.overall-stats p:nth-child(2),
+.overall-stats p:nth-child(3) {
+  margin-right: 0.5rem;
 }
 .players-name {
   color: white;
   text-transform: uppercase;
   display: flex;
   justify-content: center;
+  align-items: center;
   align-content: center;
+  height: 80%;
 }
 
 .players-name p {
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
+  margin-bottom: 1rem;
+  align-self: center;
 }
 
 #cardContainer {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  /* grid-template-columns: repeat(12, 120px); */
-  /* grid-template-columns: repeat(12, 80px); */
   grid-gap: 5px;
   grid-auto-flow: row;
-  /* max-width: 50%; */
-  /* margin-right: auto; */
   padding-right: 50px;
   grid-template-areas:
     'card1 card2 card3 card4 card5 card6 card7 card8 card9 card10 card11 card12'
@@ -77,60 +87,37 @@ body {
     'card289 card290 card291 card292 card293 card294 card295 card296 card297 card298 card299 card300';
 }
 
-/* My attempt 
 .card {
-  /* max-width: 200px; 
-  /* max-width: 150px; 
-  /* margin: 0.2rem; 
-} */
-.card {
-  font-size: 12px;
-  /* border-radius: 12px; */
+  text-align: center;
 }
 
-/* :nth-child(n + 13):nth-child(-n + 24),
-:nth-child(n + 37):nth-child(-n + 48),
-:nth-child(n + 61):nth-child(-n + 72),
-:nth-child(n + 85):nth-child(-n + 96),
-:nth-child(n + 109):nth-child(-n + 120),
-:nth-child(n + 133):nth-child(-n + 144),
-:nth-child(n + 157):nth-child(-n + 168),
-:nth-child(n + 181):nth-child(-n + 192),
-:nth-child(n + 205):nth-child(-n + 216),
-:nth-child(n + 229):nth-child(-n + 240),
-:nth-child(n + 253):nth-child(-n + 264),
-:nth-child(n + 277):nth-child(-n + 288) {
-  background: black !important;
-} */
+.card .overall-stats {
+  font-size: 12px;
+}
+
+.card .players-name {
+  font-size: 18px;
+}
 
 .allContainer {
   display: flex;
-  /* justify-content: space-between; */
-  /* justify-content: space-evenly; */
   justify-content: flex-start;
 }
 
 #dragZone {
-  /* display: grid;
-  grid-template-columns: 1 1fr;
-  grid-auto-flow: column; */
-
-  width: 120px;
-  /* height: 1260px; */
-  background: black;
+  /* width: 120px; */
+  /* background: darkgrey; */
+  border: 5px dashed black;
   margin-right: auto;
 }
 
 #dragZone .card {
-  /* max-width: 120px; */
-  /* height: 83px; */
-  border-bottom: 5px solid darkgray;
+  /* border-bottom: 5px solid transparent; */
+  margin-bottom: 5px;
 }
 
 .draggable.dragging {
   opacity: 0.5;
-  /* border: 5px solid red; */
-  box-shadow: inset 0 0 0 2px red;
 }
 
 .presumedUnavailable {
@@ -141,11 +128,24 @@ body {
   .allContainer {
     justify-content: space-evenly;
   }
+  .allContainer .container {
+    max-width: 50%;
+  }
+
+  #cardContainer {
+    height: 100vh;
+    overflow: scroll;
+  }
+
+  #cardContainer .presumedUnavailable {
+    /* display: none; */
+  }
+
   #dragZone {
     margin-right: 0;
   }
   #cardContainer {
-    padding-right: 20px;
+    padding-right: 0;
     grid-template-columns: 1fr;
     grid-template-areas:
       'card1'

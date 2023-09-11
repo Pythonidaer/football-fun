@@ -7,7 +7,7 @@ function adjustDragZone() {
   const dragZone = document.getElementById(`dragZone`)
   for (let i = 299; i > 0; i--) {
     if (elements[i] && elements[i].offsetWidth !== undefined) {
-      dragZone.style.width = `${elements[i].offsetWidth}px`
+      dragZone.style.minWidth = `${elements[i].offsetWidth}px`
       break
     }
   }
@@ -92,68 +92,130 @@ data.forEach((player) => {
   container.appendChild(card)
   ranking++
 })
-
-adjustDragZone()
-
-// let img = new Image()
-// img.src = './assets/football.gif'
+if (ranking === 301) {
+  adjustDragZone()
+}
 
 /* DRAG AND DROP FUNCTIONALITY */
 
 const draggables = document.querySelectorAll('.draggable')
 const containers = document.querySelectorAll('.container')
 
-let isDragging = false
-let draggedElement = null
-
 draggables.forEach((draggable) => {
   draggable.addEventListener('dragstart', () => {
     // console.log('drag start')
     draggable.classList.add('dragging')
+    adjustDragZone()
   })
 
-  //   draggable.addEventListener('touchstart', (e) => {
-  //     e.preventDefault()
-  //     console.log('touch start')
-  //   })
-  //   draggable.addEventListener('touchmove', (e) => {
-  //     e.preventDefault()
-  //     console.log('touch start')
-  //   })
+  draggable.addEventListener('touchstart', (e) => {
+    e.preventDefault()
+    adjustDragZone()
+  })
+  draggable.addEventListener('touchmove', (e) => {
+    e.preventDefault()
+  })
+
+  draggable.addEventListener('touchend', (e) => {
+    e.preventDefault()
+  })
 
   draggable.addEventListener('dragend', () => {
     draggable.classList.remove('dragging')
-    console.log('check lists')
-    testR()
+
+    checkElementsInDragZone()
     checkElementsInNestedArrays(singleCol, arrayOfArrays)
     adjustDragZone()
   })
 })
 
+let isDragging = false
+let draggedElement = null
+let correctCard
+let dragToColumn
+
 containers.forEach((container) => {
   container.addEventListener('dragover', (e) => {
     e.preventDefault()
-    // const afterElement = getDragAfterElement(container, e.clientY)
-    // const draggable = document.querySelector('.dragging')
-    // if (afterElement == null) {
-    //   container.appendChild(draggable)
-    // } else {
-    //   container.insertBefore(draggable, afterElement)
-    // }
     const draggable = document.querySelector('.dragging')
     container.appendChild(draggable)
   })
+  container.addEventListener('touchstart', (e) => {
+    // Prevent default touch behavior to avoid conflicts
+    e.preventDefault()
+
+    const touch = e.touches[0]
+    draggedElement = touch.target
+    // console.log(draggedElement)
+    if (draggedElement === null) {
+      draggedElement = touch.target.firstChild
+    } else {
+      correctCard = draggedElement.closest('.card')
+      console.log(draggedElement)
+      console.log(correctCard)
+    }
+    // console.log(correctCard)
+
+    // Mark that an element is being dragged
+    isDragging = true
+
+    // Store initial touch coordinates for calculating movement
+    draggedElement.initialX = touch.clientX
+    draggedElement.initialY = touch.clientY
+
+    // Optionally, you can add a class to the dragged element for styling purposes
+    draggedElement.classList.add('dragging')
+  })
+
+  container.addEventListener('touchmove', (e) => {
+    e.preventDefault()
+
+    if (isDragging) {
+      const touch = e.touches[0]
+
+      // Calculate the distance moved from the initial touch point
+      const deltaX = touch.clientX - draggedElement.initialX
+      const deltaY = touch.clientY - draggedElement.initialY
+    }
+  })
+
+  container.addEventListener('touchend', (e) => {
+    e.preventDefault()
+    // let test2 = document.getElementById('dragZone')
+    // if (test2) {
+    //   test2.innerHTML = test2.innerHTML.replace(/null/g, '')
+    //   test2.innerHTML = test2.innerHTML.replace(/undefined/g, '')
+    // }
+
+    const touchEnd = e.changedTouches[0]
+    console.log(touchEnd)
+    if (document.elementFromPoint(touchEnd.pageX, touchEnd.pageY) === null) {
+      dragToColumn = document
+        .elementFromPoint(touchEnd.clientX, touchEnd.clientY)
+        .firstChild()
+        .closest('.container')
+    } else {
+      dragToColumn = document
+        .elementFromPoint(touchEnd.pageX, touchEnd.pageY)
+        .closest('.container')
+    }
+    // if (correctCard === null) {
+    //   correctCard = ''
+    // }
+
+    if (dragToColumn != null && correctCard != null) {
+      dragToColumn.append(correctCard)
+      checkElementsInDragZone()
+      checkElementsInNestedArrays(singleCol, arrayOfArrays)
+    }
+    if (isDragging) {
+      // Remove the dragging class and reset the draggedElement
+      draggedElement.classList.remove('dragging')
+      draggedElement = null
+      isDragging = false
+    }
+  })
 })
-
-/* DRAG AND DROP END */
-
-/*
-NEED TO FIGURE OUT HOW TO INCORPORATE THE FOLLOWING:
-- touchstart
-- touchmove
-- touchend
-
-*/
 
 /* GREYED ROWS START */
 const rowsToGrey = document.querySelectorAll('#cardContainer .card')
@@ -162,20 +224,15 @@ let snakeRows = []
 rowsToGrey.forEach((card) => {
   snakeRows.push(card)
 })
-// console.log(snakeRows)
 
 // Initialize an empty array to store arrays of 12 elements each
 const arrayOfArrays = []
-// const arrayOfArraysIds = []
 
 // Initialize an empty subarray
 let subarray = []
-// let subarrayId = []
 
 // Loop through the elements in the inputArray
 for (let i = 0; i < snakeRows.length; i++) {
-  // Add the current element to the subarray
-  //   subarray.push(snakeRows[i])
   subarray.push(snakeRows[i].id)
 
   // Check if the subarray has reached a length of 12
@@ -188,8 +245,6 @@ for (let i = 0; i < snakeRows.length; i++) {
     subarray = []
   }
 }
-
-console.log(arrayOfArrays)
 
 // Initialize an empty array to store the extracted phrases
 const extractedPhrases = []
@@ -218,15 +273,9 @@ for (let i = 0; i < arrayOfArrays.length; i++) {
   }
 }
 
-// console.log(extractedPhrases)
-
-// Need a function that checks #dragZone .card container when a drag event occurs
-// need to repeat a lot of the above code for each card, but I don't need 12 rows just 1
-// When I compare one array to the other nested array, if card1 is in [card1... card12] add a class to that entire row else remove it
 let singleCol = []
-const testR = () => {
+const checkElementsInDragZone = () => {
   const cardDeterminingGrey = document.querySelectorAll('#dragZone .card')
-  console.log(cardDeterminingGrey.length)
   if (cardDeterminingGrey.length == 0) {
     singleCol = []
   } else {
@@ -237,8 +286,6 @@ const testR = () => {
       }
     })
   }
-  //   console.log(singleCol)
-  //   singleCol = []
 }
 
 const checkElementsInNestedArrays = (arrayToCheck, arrayToSearch) => {
@@ -254,7 +301,7 @@ const checkElementsInNestedArrays = (arrayToCheck, arrayToSearch) => {
             `#cardContainer .${className}`
           )
           elementsWithClass.forEach((element) => {
-            element.classList.add('presumedUnavailable') // Replace 'your-class-name' with the class you want to add
+            element.classList.add('presumedUnavailable')
           })
         })
 
@@ -270,7 +317,7 @@ const checkElementsInNestedArrays = (arrayToCheck, arrayToSearch) => {
           `#cardContainer .${className}`
         )
         elementsWithClass.forEach((element) => {
-          element.classList.remove('presumedUnavailable') // Remove the class
+          element.classList.remove('presumedUnavailable')
         })
       })
     }
