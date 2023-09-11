@@ -131,7 +131,7 @@ h1 {
     max-width: 90%;
   }
   .allContainer .container {
-    max-width: 50%;
+    width: 40%;
   }
 
   /* body {

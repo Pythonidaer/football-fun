@@ -2,15 +2,15 @@ import data from './data/2023pprTop300.js'
 
 let ranking = 1
 function adjustDragZone() {
-  const element = document.querySelector(`#cardContainer .card300`)
-  const elements = document.querySelectorAll(`#cardContainer .card`)
-  const dragZone = document.getElementById(`dragZone`)
-  for (let i = 299; i > 0; i--) {
-    if (elements[i] && elements[i].offsetWidth !== undefined) {
-      dragZone.style.minWidth = `${elements[i].offsetWidth}px`
-      break
-    }
-  }
+  //   const element = document.querySelector(`#cardContainer .card300`)
+  //   const elements = document.querySelectorAll(`#cardContainer .card`)
+  //   const dragZone = document.getElementById(`dragZone`)
+  //   for (let i = 299; i > 0; i--) {
+  //     if (elements[i] && elements[i].offsetWidth !== undefined) {
+  //       dragZone.style.minWidth = `${elements[i].offsetWidth}px`
+  //       break
+  //     }
+  //   }
 }
 function createCard(data) {
   const card = document.createElement('div')
