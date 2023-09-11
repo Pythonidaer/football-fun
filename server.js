@@ -62,7 +62,7 @@ function convertToCardObjects(finalArray) {
 
 const server = http.createServer(async (req, res) => {
   if (req.url === '/pdf') {
-    const pdfPath = './assets/football.pdf'
+    const pdfPath = './assets/football2.pdf'
 
     try {
       const pdfText = await getPdfText(pdfPath)

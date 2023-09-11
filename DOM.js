@@ -3,9 +3,14 @@ import data from './data/2023pprTop300.js'
 let ranking = 1
 function adjustDragZone() {
   const element = document.querySelector(`#cardContainer .card300`)
+  const elements = document.querySelectorAll(`#cardContainer .card`)
   const dragZone = document.getElementById(`dragZone`)
-  dragZone.style.width = `${element.offsetWidth}px`
-  console.log(element.offsetWidth)
+  for (let i = 299; i > 0; i--) {
+    if (elements[i] && elements[i].offsetWidth !== undefined) {
+      dragZone.style.width = `${elements[i].offsetWidth}px`
+      break
+    }
+  }
 }
 function createCard(data) {
   const card = document.createElement('div')
@@ -98,11 +103,23 @@ adjustDragZone()
 const draggables = document.querySelectorAll('.draggable')
 const containers = document.querySelectorAll('.container')
 
+let isDragging = false
+let draggedElement = null
+
 draggables.forEach((draggable) => {
   draggable.addEventListener('dragstart', () => {
     // console.log('drag start')
     draggable.classList.add('dragging')
   })
+
+  //   draggable.addEventListener('touchstart', (e) => {
+  //     e.preventDefault()
+  //     console.log('touch start')
+  //   })
+  //   draggable.addEventListener('touchmove', (e) => {
+  //     e.preventDefault()
+  //     console.log('touch start')
+  //   })
 
   draggable.addEventListener('dragend', () => {
     draggable.classList.remove('dragging')
@@ -129,6 +146,14 @@ containers.forEach((container) => {
 })
 
 /* DRAG AND DROP END */
+
+/*
+NEED TO FIGURE OUT HOW TO INCORPORATE THE FOLLOWING:
+- touchstart
+- touchmove
+- touchend
+
+*/
 
 /* GREYED ROWS START */
 const rowsToGrey = document.querySelectorAll('#cardContainer .card')
