@@ -1,5 +1,3 @@
-/* Add more CSS rules for styling as needed */
-
 * {
   box-sizing: border-box;
   margin: 0;
@@ -105,14 +103,12 @@ h1 {
 }
 
 #dragZone {
-  /* width: 120px; */
-  /* background: darkgrey; */
   border: 5px dashed black;
   margin-right: auto;
+  width: 20%;
 }
 
 #dragZone .card {
-  /* border-bottom: 5px solid transparent; */
   margin-bottom: 5px;
 }
 
@@ -127,38 +123,10 @@ h1 {
 @media (max-width: 768px) {
   .allContainer {
     justify-content: space-evenly;
-    /* justify-content: flex-start; */
     max-width: 90%;
   }
   .allContainer .container {
-    width: 40%;
-  }
-
-  /* body {
-    scrollbar-width: 80px; /* "thin" or "auto" 
-    scrollbar-color: #888 #f4f4f4; /* Color of the thumb and track 
-  }
-
-  ::-webkit-scrollbar {
-    width: 80px; /* Width of the scrollbar 
-  
-  /* For the scrollbar thumb (the draggable part) 
-  ::-webkit-scrollbar-thumb {
-    background: #888; /* Color of the thumb 
-    border-radius: 6px; /* Rounded corners for the thumb 
-  
-  /* For the scrollbar track when hovered over 
-  ::-webkit-scrollbar-thumb:hover {
-    background: #555; /* Color of the thumb when hovered 
-  } */
-
-  #cardContainer {
-    /* height: 100vh; */
-    /* overflow: scroll; */
-  }
-
-  #cardContainer .presumedUnavailable {
-    /* display: none; */
+    width: 40% !important;
   }
 
   #dragZone {

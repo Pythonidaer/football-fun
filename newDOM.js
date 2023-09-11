@@ -1,86 +1,113 @@
 import data from './data/2023pprTop300.js'
 
-let ranking = 1
-
-function createCard(data) {
-  const card = document.createElement('div')
-  card.classList.add('card')
-  card.classList.add(`card${ranking}`)
-  card.classList.add('draggable')
-  card.id = `card${ranking}`
-  card.draggable = true
-
-  card.style.gridArea = `card${ranking}`
-
-  // Create card content
-  const overallStats = document.createElement('div')
-  overallStats.classList.add('overall-stats')
-
-  const overallRanking = document.createElement('p')
-  overallRanking.textContent = data.overallRanking
-
-  const positionalRanking = document.createElement('p')
-  positionalRanking.textContent = data.positionalRanking
-
-  const teamName = document.createElement('p')
-  teamName.textContent = data.teamName
-
-  const playerName = document.createElement('div')
-  playerName.classList.add('players-name')
-
-  const playerNameParagraph = document.createElement('p')
-  playerNameParagraph.textContent = data.playerName
-
-  // Set background color based on positionalRanking pattern
-  const rankingPattern = data.positionalRanking.charAt(1) // Get the character after '('
-  switch (rankingPattern) {
-    case 'Q':
-      card.style.backgroundColor = 'rgb(225, 14, 23)'
-      break
-    case 'W':
-      card.style.backgroundColor = 'rgb(1, 149, 71)'
-      break
-    case 'R':
-      card.style.backgroundColor = 'rgb(1, 159, 230)'
-      break
-    case 'T':
-      card.style.backgroundColor = 'rgb(248, 148, 2)'
-      break
-    case 'D':
-      card.style.backgroundColor = 'rgb(255, 239, 3)'
-      overallRanking.style.color = 'black'
-      teamName.style.color = 'black'
-      positionalRanking.style.color = 'black'
-      playerNameParagraph.style.color = 'black'
-      break
-    case 'K':
-      card.style.backgroundColor = 'rgb(230, 0, 126)'
-      break
-    default:
-      // Set a default color or no background color for other cases
-      break
+class Card {
+  constructor(data, ranking) {
+    this.data = data
+    this.ranking = ranking
+    this.element = this.createCardElement()
+    this.addEventListeners()
   }
 
-  overallStats.appendChild(overallRanking)
-  overallStats.appendChild(positionalRanking)
-  overallStats.appendChild(teamName)
+  createCardElement() {
+    const card = document.createElement('div')
+    card.classList.add('card')
+    card.classList.add(`card${this.ranking}`)
+    card.classList.add('draggable')
+    card.id = `card${this.ranking}`
+    card.draggable = true
+    card.style.gridArea = `card${this.ranking}`
 
-  playerName.appendChild(playerNameParagraph)
+    // Create card content
+    const overallStats = document.createElement('div')
+    overallStats.classList.add('overall-stats')
 
-  // Append content to the card
-  card.appendChild(overallStats)
-  card.appendChild(playerName)
+    const overallRanking = document.createElement('p')
+    overallRanking.textContent = this.data.overallRanking
 
-  return card
+    const positionalRanking = document.createElement('p')
+    positionalRanking.textContent = this.data.positionalRanking
+
+    const teamName = document.createElement('p')
+    teamName.textContent = this.data.teamName
+
+    const playerName = document.createElement('div')
+    playerName.classList.add('players-name')
+
+    const playerNameParagraph = document.createElement('p')
+    playerNameParagraph.textContent = this.data.playerName
+
+    // Set background color based on positionalRanking pattern
+    const rankingPattern = this.data.positionalRanking.charAt(1) // Get the character after '('
+    switch (rankingPattern) {
+      case 'Q':
+        card.style.backgroundColor = 'rgb(225, 14, 23)'
+        break
+      case 'W':
+        card.style.backgroundColor = 'rgb(1, 149, 71)'
+        break
+      case 'R':
+        card.style.backgroundColor = 'rgb(1, 159, 230)'
+        break
+      case 'T':
+        card.style.backgroundColor = 'rgb(248, 148, 2)'
+        break
+      case 'D':
+        card.style.backgroundColor = 'rgb(255, 239, 3)'
+        overallRanking.style.color = 'black'
+        teamName.style.color = 'black'
+        positionalRanking.style.color = 'black'
+        playerNameParagraph.style.color = 'black'
+        break
+      case 'K':
+        card.style.backgroundColor = 'rgb(230, 0, 126)'
+        break
+      default:
+        // Set a default color or no background color for other cases
+        break
+    }
+
+    overallStats.appendChild(overallRanking)
+    overallStats.appendChild(positionalRanking)
+    overallStats.appendChild(teamName)
+
+    playerName.appendChild(playerNameParagraph)
+
+    // Append content to the card
+    card.appendChild(overallStats)
+    card.appendChild(playerName)
+
+    return card
+  }
+
+  addEventListeners() {
+    this.element.addEventListener('dragstart', () => {
+      this.element.classList.add('dragging')
+    })
+
+    this.element.addEventListener('touchstart', (e) => {
+      e.preventDefault()
+    })
+
+    this.element.addEventListener('touchmove', (e) => {
+      e.preventDefault()
+    })
+
+    this.element.addEventListener('touchend', (e) => {
+      e.preventDefault()
+    })
+
+    this.element.addEventListener('dragend', () => {
+      this.element.classList.remove('dragging')
+    })
+  }
 }
 
 // Get the container element
 const container = document.getElementById('cardContainer')
 
-data.forEach((player) => {
-  const card = createCard(player)
-  container.appendChild(card)
-  ranking++
+data.forEach((player, index) => {
+  const card = new Card(player, index + 1)
+  container.appendChild(card.element)
 })
 
 /* DRAG AND DROP FUNCTIONALITY */
@@ -96,6 +123,7 @@ draggables.forEach((draggable) => {
   draggable.addEventListener('touchstart', (e) => {
     e.preventDefault()
   })
+
   draggable.addEventListener('touchmove', (e) => {
     e.preventDefault()
   })
@@ -106,10 +134,6 @@ draggables.forEach((draggable) => {
 
   draggable.addEventListener('dragend', () => {
     draggable.classList.remove('dragging')
-
-    checkElementsInDragZone()
-    checkElementsInNestedArrays(singleCol, arrayOfArrays)
-    adjustDragZone()
   })
 })
 
@@ -124,6 +148,7 @@ containers.forEach((container) => {
     const draggable = document.querySelector('.dragging')
     container.appendChild(draggable)
   })
+
   container.addEventListener('touchstart', (e) => {
     // Prevent default touch behavior to avoid conflicts
     e.preventDefault()
@@ -178,8 +203,6 @@ containers.forEach((container) => {
 
     if (dragToColumn != null && correctCard != null) {
       dragToColumn.append(correctCard)
-      checkElementsInDragZone()
-      checkElementsInNestedArrays(singleCol, arrayOfArrays)
     }
     if (isDragging) {
       // Remove the dragging class and reset the draggedElement
@@ -227,7 +250,7 @@ for (let i = 0; i < arrayOfArrays.length; i++) {
   // Loop through the elements in the subarray
   for (let j = 0; j < subarray.length; j++) {
     const element = subarray[j]
-    // console.log(element)
+    // console.log(element);
 
     // Convert the DOM element to a string using outerHTML
     const elementString =
@@ -245,6 +268,10 @@ for (let i = 0; i < arrayOfArrays.length; i++) {
 }
 
 let singleCol = []
+
+// Implement the checkElementsInDragZone and checkElementsInNestedArrays methods here
+
+/* This code does not correctly implement the checkelementsin dragzone and checkelements in nested arrays */
 const checkElementsInDragZone = () => {
   const cardDeterminingGrey = document.querySelectorAll('#dragZone .card')
   if (cardDeterminingGrey.length == 0) {
