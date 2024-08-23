@@ -1674,3 +1674,5 @@ const data = [
     teamName: 'CAR',
   },
 ]
+
+export default data
