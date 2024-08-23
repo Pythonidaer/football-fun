@@ -1,4 +1,5 @@
-import data from './data/2023pprTop300.js'
+// import data from './data/2023pprTop300.js'
+import data from './data/2024pprTop300.js'
 
 let ranking = 1
 
